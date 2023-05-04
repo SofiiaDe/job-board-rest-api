@@ -21,7 +21,7 @@ public class VacancyController {
 
 
     private final IVacancyService vacancyService;
-    private final VacancyModelAssembler assembler;
+    private final VacancyModelAssembler vacancyModelAssembler;
 
     @GetMapping
     public ResponseEntity<?> getJobBoard() {
@@ -32,17 +32,27 @@ public class VacancyController {
     public CollectionModel<EntityModel<VacancyDto>> getVacanciesPage(@RequestParam(required = false, defaultValue = "1") int page) {
 
         List<EntityModel<VacancyDto>> vacancies = vacancyService.getVacanciesPage(page).stream()
-                .map(assembler::toModel)
+                .map(vacancyModelAssembler::toModel)
                 .toList();
 
         return CollectionModel.of(vacancies, linkTo(methodOn(VacancyController.class).getVacanciesPage(page)).withSelfRel());
+    }
+
+    @PostMapping("/savePage")
+    CollectionModel<EntityModel<VacancyDto>> saveVacanciesPage(@RequestParam(required = false, defaultValue = "1") int page) {
+
+        List<VacancyDto> vacancyDtoList = vacancyService.getVacanciesPage(page);
+        List<EntityModel<VacancyDto>> savedVacancies = vacancyDtoList.stream()
+                .map(vacancy -> vacancyModelAssembler.toModel(vacancyService.saveVacancy(vacancy))).toList();
+
+        return CollectionModel.of(savedVacancies, linkTo(methodOn(VacancyController.class).getVacancies()).withSelfRel());
     }
 
     @GetMapping("/vacancies")
     public CollectionModel<EntityModel<VacancyDto>> getVacancies() {
 
         List<EntityModel<VacancyDto>> vacancies = vacancyService.getAllVacancies().stream()
-                .map(assembler::toModel)
+                .map(vacancyModelAssembler::toModel)
                 .toList();
 
         return CollectionModel.of(vacancies, linkTo(methodOn(VacancyController.class).getVacancies()).withSelfRel());
@@ -52,7 +62,8 @@ public class VacancyController {
     public EntityModel<VacancyDto> getVacancyById(@PathVariable Long id) {
 
         VacancyDto vacancyDto = vacancyService.getVacancyById(id);
-        return assembler.toModel(vacancyDto);
+        return vacancyModelAssembler.toModel(vacancyDto);
     }
+
 
 }

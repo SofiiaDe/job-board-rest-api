@@ -5,3 +5,8 @@ Write Java BE (java 11+ )
 - getting top 10 latest most viewed
 - statistics on locations (city and number of vacancies)
 3) Cover with tests
+
+
+Notes
+After starting the application, the H2 database is accessible through the following url:
+http://localhost:8080/h2-console

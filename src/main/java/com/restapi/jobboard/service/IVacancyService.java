@@ -10,6 +10,7 @@ public interface IVacancyService {
     List<VacancyDto> getAllVacancies();
     VacancyDto getVacancyById(Long id);
     JobBoardModel getJobBoard();
-
     List<VacancyDto> getVacanciesPage(int page);
+    VacancyDto saveVacancy(VacancyDto vacancyDto);
+
 }
