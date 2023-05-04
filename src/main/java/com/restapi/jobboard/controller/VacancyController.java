@@ -2,8 +2,10 @@ package com.restapi.jobboard.controller;
 
 import com.restapi.jobboard.component.VacancyModelAssembler;
 import com.restapi.jobboard.model.dto.VacancyDto;
+import com.restapi.jobboard.model.payload.request.SearchRequest;
 import com.restapi.jobboard.service.IVacancyService;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.http.ResponseEntity;
@@ -63,6 +65,11 @@ public class VacancyController {
 
         VacancyDto vacancyDto = vacancyService.getVacancyById(id);
         return vacancyModelAssembler.toModel(vacancyDto);
+    }
+
+    @PostMapping(value = "/search")
+    public Page<VacancyDto> search(@RequestBody SearchRequest request) {
+        return vacancyService.searchVacancy(request);
     }
 
 }

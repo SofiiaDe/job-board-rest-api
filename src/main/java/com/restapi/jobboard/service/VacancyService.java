@@ -10,11 +10,15 @@ import com.restapi.jobboard.model.mapper.ApiVacancyMapper;
 import com.restapi.jobboard.model.mapper.JobTypeMapper;
 import com.restapi.jobboard.model.mapper.TagMapper;
 import com.restapi.jobboard.model.mapper.VacancyMapper;
+import com.restapi.jobboard.model.payload.request.SearchRequest;
+import com.restapi.jobboard.model.search.SearchSpecification;
 import com.restapi.jobboard.repository.JobTypeRepository;
 import com.restapi.jobboard.repository.TagRepository;
 import com.restapi.jobboard.repository.VacancyRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
@@ -81,6 +85,13 @@ public class VacancyService implements IVacancyService {
                 .orElseThrow(() -> new VacancyNotFoundException(VACANCY_NOT_FOUND + id));
 
         return vacancyMapper.toDto(vacancy);
+    }
+
+    @Override
+    public Page<VacancyDto> searchVacancy(SearchRequest request) {
+        SearchSpecification<Vacancy> specification = new SearchSpecification<>(request);
+        Pageable pageable = SearchSpecification.getPageable(request.getPage(), request.getSize());
+        return vacancyRepository.findAll(specification, pageable).map(vacancyMapper::toDto);
     }
 
     private boolean slugExist(String slug) {
