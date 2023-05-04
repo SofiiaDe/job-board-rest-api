@@ -1,9 +1,11 @@
 package com.restapi.jobboard.service;
 
 import com.restapi.jobboard.exception.VacancyAlreadyStoredException;
+import com.restapi.jobboard.exception.VacancyNotFoundException;
 import com.restapi.jobboard.model.arbeitnowapi.ApiVacancyModel;
 import com.restapi.jobboard.model.arbeitnowapi.JobBoardModel;
 import com.restapi.jobboard.model.dto.VacancyDto;
+import com.restapi.jobboard.model.entity.Vacancy;
 import com.restapi.jobboard.model.mapper.ApiVacancyMapper;
 import com.restapi.jobboard.model.mapper.JobTypeMapper;
 import com.restapi.jobboard.model.mapper.TagMapper;
@@ -29,6 +31,8 @@ public class VacancyService implements IVacancyService {
     private static final String JOB_BOARD_API_URL = "https://www.arbeitnow.com/api/job-board-api";
     private static final String VACANCIES_PAGE_API_URL = "https://www.arbeitnow.com/api/job-board-api?page=";
     private static final String VACANCY_IS_ALREADY_STORED_IN_DB = "The database already contains the vacancy with the following slug: ";
+    private static final String VACANCY_NOT_FOUND = "Can't retrieve vacancy with id = ";
+
 
     private final VacancyRepository vacancyRepository;
     private final TagRepository tagRepository;
@@ -65,13 +69,18 @@ public class VacancyService implements IVacancyService {
     }
 
     @Override
-    public List<VacancyDto> getAllVacancies() {
-        return null;
+    public List<VacancyDto> getAllVacanciesFromDb() {
+        return vacancyRepository.findAll().stream()
+                .map(vacancyMapper::toDto)
+                .toList();
     }
 
     @Override
     public VacancyDto getVacancyById(Long id) {
-        return null;
+        Vacancy vacancy = vacancyRepository.findById(id)
+                .orElseThrow(() -> new VacancyNotFoundException(VACANCY_NOT_FOUND + id));
+
+        return vacancyMapper.toDto(vacancy);
     }
 
     private boolean slugExist(String slug) {

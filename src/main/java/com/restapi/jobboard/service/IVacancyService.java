@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface IVacancyService {
 
-    List<VacancyDto> getAllVacancies();
+    List<VacancyDto> getAllVacanciesFromDb();
     VacancyDto getVacancyById(Long id);
     JobBoardModel getJobBoard();
     List<VacancyDto> getVacanciesPage(int page);

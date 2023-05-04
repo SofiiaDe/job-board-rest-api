@@ -24,7 +24,7 @@ public class VacancyModelAssembler implements
 
         return EntityModel.of(vacancyDto,
                 linkTo(methodOn(VacancyController.class).getVacancyById(vacancyDto.getId())).withSelfRel(),
-                linkTo(methodOn(VacancyController.class).getVacancies()).withRel("vacancies"));
+                linkTo(methodOn(VacancyController.class).getAllStoredVacancies()).withRel("vacancies"));
     }
 
 }

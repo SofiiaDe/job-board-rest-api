@@ -45,17 +45,17 @@ public class VacancyController {
         List<EntityModel<VacancyDto>> savedVacancies = vacancyDtoList.stream()
                 .map(vacancy -> vacancyModelAssembler.toModel(vacancyService.saveVacancy(vacancy))).toList();
 
-        return CollectionModel.of(savedVacancies, linkTo(methodOn(VacancyController.class).getVacancies()).withSelfRel());
+        return CollectionModel.of(savedVacancies, linkTo(methodOn(VacancyController.class).getAllStoredVacancies()).withSelfRel());
     }
 
     @GetMapping("/vacancies")
-    public CollectionModel<EntityModel<VacancyDto>> getVacancies() {
+    public CollectionModel<EntityModel<VacancyDto>> getAllStoredVacancies() {
 
-        List<EntityModel<VacancyDto>> vacancies = vacancyService.getAllVacancies().stream()
+        List<EntityModel<VacancyDto>> vacancies = vacancyService.getAllVacanciesFromDb().stream()
                 .map(vacancyModelAssembler::toModel)
                 .toList();
 
-        return CollectionModel.of(vacancies, linkTo(methodOn(VacancyController.class).getVacancies()).withSelfRel());
+        return CollectionModel.of(vacancies, linkTo(methodOn(VacancyController.class).getAllStoredVacancies()).withSelfRel());
     }
 
     @GetMapping("/{id}")
@@ -64,6 +64,5 @@ public class VacancyController {
         VacancyDto vacancyDto = vacancyService.getVacancyById(id);
         return vacancyModelAssembler.toModel(vacancyDto);
     }
-
 
 }

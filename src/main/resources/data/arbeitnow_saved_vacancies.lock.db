@@ -1,6 +1,6 @@
 #FileLock
-#Thu May 04 11:05:36 EEST 2023
-server=192.168.0.102\:64368
+#Thu May 04 19:41:20 EEST 2023
+server=192.168.0.102\:53534
 hostName=DESKTOP-036NK2R
 method=file
-id=187e5cb896784e0abf63f4b88b384b127c4cdb9a604
+id=187e7a3b4abc07d27be44a66ac537fa860282ad11ac
