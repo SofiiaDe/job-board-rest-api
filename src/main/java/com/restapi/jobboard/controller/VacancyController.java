@@ -81,4 +81,9 @@ public class VacancyController {
         return CollectionModel.of(vacancies, linkTo(methodOn(VacancyController.class).getAllStoredVacancies()).withSelfRel());
     }
 
+    @GetMapping("/locationStatistics")
+    public ResponseEntity<?> getLocationStatistics() {
+        return ResponseEntity.ok(vacancyService.getLocationStatistics());
+    }
+
 }

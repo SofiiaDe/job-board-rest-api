@@ -3,6 +3,7 @@ package com.restapi.jobboard.service;
 import com.restapi.jobboard.model.arbeitnowapi.JobBoardModel;
 import com.restapi.jobboard.model.dto.VacancyDto;
 import com.restapi.jobboard.model.payload.request.SearchRequest;
+import com.restapi.jobboard.model.payload.response.LocationStatistics;
 import org.springframework.data.domain.Page;
 
 import java.util.List;
@@ -16,4 +17,5 @@ public interface IVacancyService {
     VacancyDto saveVacancy(VacancyDto vacancyDto);
     Page<VacancyDto> searchVacancy(SearchRequest request);
     List<VacancyDto> getTop10LatestMostViewed();
+    List<LocationStatistics> getLocationStatistics();
 }

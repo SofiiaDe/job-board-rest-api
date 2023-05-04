@@ -11,6 +11,7 @@ import com.restapi.jobboard.model.mapper.JobTypeMapper;
 import com.restapi.jobboard.model.mapper.TagMapper;
 import com.restapi.jobboard.model.mapper.VacancyMapper;
 import com.restapi.jobboard.model.payload.request.SearchRequest;
+import com.restapi.jobboard.model.payload.response.LocationStatistics;
 import com.restapi.jobboard.model.search.SearchSpecification;
 import com.restapi.jobboard.repository.JobTypeRepository;
 import com.restapi.jobboard.repository.TagRepository;
@@ -99,6 +100,11 @@ public class VacancyService implements IVacancyService {
     public List<VacancyDto> getTop10LatestMostViewed() {
         return vacancyRepository.getTop10LatestMostViewedVacancies()
                 .stream().map(vacancyMapper::toDto).toList();
+    }
+
+    @Override
+    public List<LocationStatistics> getLocationStatistics() {
+        return vacancyRepository.getLocationStatistics();
     }
 
     private boolean slugExist(String slug) {
