@@ -83,8 +83,9 @@ public class VacancyService implements IVacancyService {
     public VacancyDto getVacancyById(Long id) {
         Vacancy vacancy = vacancyRepository.findById(id)
                 .orElseThrow(() -> new VacancyNotFoundException(VACANCY_NOT_FOUND + id));
-
-        return vacancyMapper.toDto(vacancy);
+        vacancy.setViews(vacancy.getViews()+1);
+        Vacancy updatedVacancy = vacancyRepository.save(vacancy);
+        return vacancyMapper.toDto(updatedVacancy);
     }
 
     @Override
@@ -92,6 +93,12 @@ public class VacancyService implements IVacancyService {
         SearchSpecification<Vacancy> specification = new SearchSpecification<>(request);
         Pageable pageable = SearchSpecification.getPageable(request.getPage(), request.getSize());
         return vacancyRepository.findAll(specification, pageable).map(vacancyMapper::toDto);
+    }
+
+    @Override
+    public List<VacancyDto> getTop10LatestMostViewed() {
+        return vacancyRepository.getTop10LatestMostViewedVacancies()
+                .stream().map(vacancyMapper::toDto).toList();
     }
 
     private boolean slugExist(String slug) {

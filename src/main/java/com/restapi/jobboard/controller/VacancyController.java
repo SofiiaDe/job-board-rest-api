@@ -72,4 +72,13 @@ public class VacancyController {
         return vacancyService.searchVacancy(request);
     }
 
+    @GetMapping("/topVisited")
+    public CollectionModel<EntityModel<VacancyDto>> getTop10LatestMostViewed() {
+        List<EntityModel<VacancyDto>> vacancies = vacancyService.getTop10LatestMostViewed().stream()
+                .map(vacancyModelAssembler::toModel)
+                .toList();
+
+        return CollectionModel.of(vacancies, linkTo(methodOn(VacancyController.class).getAllStoredVacancies()).withSelfRel());
+    }
+
 }

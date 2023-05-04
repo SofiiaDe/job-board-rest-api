@@ -46,6 +46,5 @@ public class Vacancy {
     @Column(name = "created_at")
     private String createdAt;
 
-    @Column(name = "vacancy_count")
-    private long vacancyCount;
+    private long views;
 }

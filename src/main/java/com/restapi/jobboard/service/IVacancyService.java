@@ -15,4 +15,5 @@ public interface IVacancyService {
     List<VacancyDto> getVacanciesPage(int page);
     VacancyDto saveVacancy(VacancyDto vacancyDto);
     Page<VacancyDto> searchVacancy(SearchRequest request);
+    List<VacancyDto> getTop10LatestMostViewed();
 }

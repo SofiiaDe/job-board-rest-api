@@ -20,6 +20,6 @@ public class VacancyDto {
     private List<JobTypeDto> jobTypes;
     private String location;
     private String createdAt;
-    private long vacancyCount;
+    private long views;
 
 }
