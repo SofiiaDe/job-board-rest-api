@@ -1,4 +1,4 @@
-package com.restapi.jobboard.model;
+package com.restapi.jobboard.model.arbeitnowapi;
 
 import lombok.Data;
 import lombok.experimental.Accessors;

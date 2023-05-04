@@ -1,7 +1,9 @@
 package com.restapi.jobboard.service;
 
-import com.restapi.jobboard.model.JobBoardModel;
+import com.restapi.jobboard.model.arbeitnowapi.ApiVacancyModel;
+import com.restapi.jobboard.model.arbeitnowapi.JobBoardModel;
 import com.restapi.jobboard.model.dto.VacancyDto;
+import com.restapi.jobboard.model.mapper.ApiVacancyMapper;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,8 +19,10 @@ import java.util.List;
 public class VacancyService implements IVacancyService {
 
     private static final String JOB_BOARD_API_URL = "https://www.arbeitnow.com/api/job-board-api";
+    private static final String VACANCIES_PAGE_API_URL = "https://www.arbeitnow.com/api/job-board-api?page=";
 
     private final RestTemplate restTemplate;
+    private final ApiVacancyMapper apiVacancyMapper;
 
     @Override
     public List<VacancyDto> getAllVacancies() {
@@ -34,5 +38,12 @@ public class VacancyService implements IVacancyService {
     @Override
     public JobBoardModel getJobBoard() {
         return restTemplate.getForObject(JOB_BOARD_API_URL, JobBoardModel.class);
+    }
+
+    @Override
+    public List<VacancyDto> getVacanciesPage(int page) {
+        JobBoardModel jobBoardModel = restTemplate.getForObject(VACANCIES_PAGE_API_URL + page, JobBoardModel.class);
+        List<ApiVacancyModel> apiVacancyModelList = jobBoardModel == null ? Collections.emptyList() : jobBoardModel.getData();
+        return apiVacancyModelList.stream().map(apiVacancyMapper::toEntity).toList();
     }
 }
