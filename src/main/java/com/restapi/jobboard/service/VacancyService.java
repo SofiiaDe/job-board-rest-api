@@ -2,6 +2,7 @@ package com.restapi.jobboard.service;
 
 import com.restapi.jobboard.exception.VacancyAlreadyStoredException;
 import com.restapi.jobboard.exception.VacancyNotFoundException;
+import com.restapi.jobboard.exception.VacancyProcessingException;
 import com.restapi.jobboard.model.arbeitnowapi.ApiVacancyModel;
 import com.restapi.jobboard.model.arbeitnowapi.JobBoardModel;
 import com.restapi.jobboard.model.dto.VacancyDto;
@@ -37,6 +38,7 @@ public class VacancyService implements IVacancyService {
     private static final String VACANCIES_PAGE_API_URL = "https://www.arbeitnow.com/api/job-board-api?page=";
     private static final String VACANCY_IS_ALREADY_STORED_IN_DB = "The database already contains the vacancy with the following slug: ";
     private static final String VACANCY_NOT_FOUND = "Can't retrieve vacancy with id = ";
+    private static final String CAN_NOT_RECEIVE_LOCATION_STATISTICS = "Can't receive statistics on location and number of vacancies";
 
 
     private final VacancyRepository vacancyRepository;
@@ -104,7 +106,12 @@ public class VacancyService implements IVacancyService {
 
     @Override
     public List<LocationStatistics> getLocationStatistics() {
-        return vacancyRepository.getLocationStatistics();
+        try {
+            return vacancyRepository.getLocationStatistics();
+        } catch (Exception exception) {
+            log.error(CAN_NOT_RECEIVE_LOCATION_STATISTICS);
+            throw new VacancyProcessingException(CAN_NOT_RECEIVE_LOCATION_STATISTICS);
+        }
     }
 
     private boolean slugExist(String slug) {

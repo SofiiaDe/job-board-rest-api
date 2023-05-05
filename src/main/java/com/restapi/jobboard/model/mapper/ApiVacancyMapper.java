@@ -4,7 +4,6 @@ import com.restapi.jobboard.model.arbeitnowapi.ApiVacancyModel;
 import com.restapi.jobboard.model.dto.JobTypeDto;
 import com.restapi.jobboard.model.dto.TagDto;
 import com.restapi.jobboard.model.dto.VacancyDto;
-import com.restapi.jobboard.model.entity.Tag;
 import org.mapstruct.Mapper;
 import org.springframework.stereotype.Component;
 
