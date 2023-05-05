@@ -20,6 +20,6 @@ public class ApiVacancyModel {
     private List<String> jobTypes;
     private String location;
     @JsonProperty("created_at")
-    private String createdAt;
+    private long createdAt;
 
 }

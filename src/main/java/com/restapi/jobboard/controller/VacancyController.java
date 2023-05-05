@@ -41,7 +41,7 @@ public class VacancyController {
     }
 
     @PostMapping("/savePage")
-    CollectionModel<EntityModel<VacancyDto>> saveVacanciesPage(@RequestParam(required = false, defaultValue = "1") int page) {
+    public CollectionModel<EntityModel<VacancyDto>> saveVacanciesPage(@RequestParam(required = false, defaultValue = "1") int page) {
 
         List<VacancyDto> vacancyDtoList = vacancyService.getVacanciesPage(page);
         List<EntityModel<VacancyDto>> savedVacancies = vacancyDtoList.stream()
